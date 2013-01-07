@@ -1,0 +1,44 @@
+* How this package was made
+
+The following is the explanation of the process of converting the
+Python package to Emacs Lisp.
+
+The following Python script was used to export Unidecode data to JSON.
+
+#+BEGIN_SRC python
+import os, sys
+
+xs = os.listdir('.')
+xs.remove('__init__.py')
+xs.sort()
+
+final_data = []
+for filename in xs:
+    module = __import__(filename[:-3])
+    module_data = list(module.data)
+
+    # some modules have data of 255 entries, fill them up to 256
+    if len(module_data) < 256:
+        module_data += [''] * (256 - len(module_data))
+
+    final_data.extend(module_data)
+#+END_SRC
+
+The following command was used to dump =final_data= to a JSON file.
+
+#+BEGIN_SRC python
+import json
+
+with open('unidecode.json', 'w') as filename:
+    json.dump(final_data, filename)
+#+END_SRC
+
+The following command was used to load JSON data as Emacs Lisp vector,
+after installing =json= package in Emacs:
+
+#+BEGIN_SRC emacs-lisp
+(json-read-file "unidecode.json")
+#+END_SRC
+
+After that the resulting vector was just stored verbatim in
+"unidecode-chars.el".
