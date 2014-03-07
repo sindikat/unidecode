@@ -19,6 +19,7 @@
 ;; More information in file README.org
 
 ;;; Code:
+(require 'cl-lib)
 
 (defvar unidecode-chars
   (read (find-file-noselect "unidecode-chars.el"))
@@ -33,7 +34,7 @@
 hyphen, convert space to hyphen"
   (let ((s (replace-regexp-in-string " " "-" (unidecode-unidecode (downcase s))))
         (valid "abcdefghijklmnopqrstuvwxyz1234567890-"))
-    (remove-if-not (lambda (ch) (find ch valid)) s)))
+    (cl-remove-if-not (lambda (ch) (cl-find ch valid)) s)))
 
 (provide 'unidecode)
 ;;; unidecode.el ends here
