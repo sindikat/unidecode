@@ -20,14 +20,16 @@
   (ert "^unidecode-"))
 
 (ert-deftest unidecode-test-unidecode ()
-  "Check ..."
+  "Test if Unicode characters convert to ASCII.
+\"Привет\" -> \"Privet\"."
   (let ((s-original "æб¦ ")
         (s-decoded "aeb| "))
     (let ((result (unidecode-unidecode s-original)))
       (should (equal result s-decoded)))))
 
 (ert-deftest unidecode-test-sanitize ()
-  "..."
+  "Test that sanitization produces strings of only alphanumeric
+characters with whitespace converted into hyphen."
   (let ((s-original "æб¦ ")
         (s-sanitized "aeb-"))
     (let ((result (unidecode-sanitize s-sanitized)))
