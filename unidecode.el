@@ -1,12 +1,14 @@
-;;; unidecode.el --- convert Unicode text into safe ASCII strings
+;;; unidecode.el --- Convert Unicode text into safe ASCII strings
+;;
 ;; Copyright (C) 2013 sindikat
 ;;
 ;; Author: sindikat <sindikat at mail36 dot net>
 ;; Version: 0.1
+;; Package-Requires: ((cl-lib "0.4"))
 ;;
 ;; This file is not part of GNU Emacs.
 ;;
-;; This file is put into public domain to the extend possible by law.
+;; This file is placed in the public domain to the extent possible by law.
 ;;
 ;;; Commentary:
 
