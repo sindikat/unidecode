@@ -23,7 +23,7 @@
 ;;; Code:
 (require 'cl-lib)
 
-(defvar unidecode-chars
+(defconst unidecode-chars
   (read (find-file-noselect "unidecode-chars.el"))
   "Contains vector of unidecoded chars corresponding to Unicode
   code point of an original char")
