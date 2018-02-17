@@ -24,9 +24,10 @@
 (require 'cl-lib)
 
 (defconst unidecode-chars
-  (read (find-file-noselect "unidecode-chars.el"))
-  "Contains vector of unidecoded chars corresponding to Unicode
-  code point of an original char")
+  (with-temp-buffer
+    (insert-file-contents "unidecode-chars.el")
+    (read (current-buffer)))
+  "Vector mapping Unicode code points to unidecoded data.")
 
 (defun unidecode-unidecode (s)
   (apply #'concat (mapcar (lambda (ch) (elt unidecode-chars ch)) s)))
