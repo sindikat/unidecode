@@ -37,12 +37,16 @@
         (delete-char 1)
         (insert (elt unidecode-chars chr))))))
 
-(defun unidecode-unidecode (string)
+(defun unidecode (string)
   "Transliterate Unicode chars in STRING and return the result."
   (with-temp-buffer
     (insert string)
     (unidecode-region (point-min) (point-max))
     (buffer-string)))
+
+;; Alias for backwards compatibility
+(defalias 'unidecode-unidecode #'unidecode
+  "Transliterate Unicode chars in STRING and return the result.")
 
 (defun unidecode-sanitize-region (beg end)
   "Sanitize region between BEG and END.
