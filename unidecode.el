@@ -29,7 +29,7 @@
   code point of an original char")
 
 (defun unidecode-unidecode (s)
-  (apply #'concat (mapcar (lambda (ch) (elt unidecode-chars ch)) s)))
+  (mapconcat (lambda (ch) (elt unidecode-chars ch)) s ""))
 
 (defun unidecode-sanitize (s)
   "Strip all chars from string that are not alphanumeric or
