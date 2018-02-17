@@ -21,11 +21,21 @@
 
 ;;; Code:
 
-(defconst unidecode-chars
-  (with-temp-buffer
-    (insert-file-contents "unidecode-chars.el")
-    (read (current-buffer)))
-  "Vector mapping Unicode code points to unidecoded data.")
+(defconst unidecode--data-directory
+  (let ((file (or load-file-name buffer-file-name)))
+    (expand-file-name "data" (file-name-directory (file-chase-links file)))))
+
+(defvar unidecode--cache (make-hash-table :test 'eq :size 185))
+
+(defun unidecode--read-file (file)
+  (let ((read-circle t))
+    (with-temp-buffer
+      (insert-file-contents file)
+      (read (current-buffer)))))
+
+(defun unidecode--section-file (section)
+  (expand-file-name (format "unidecode-x%03x.eld" section)
+                    unidecode--data-directory))
 
 (defun unidecode-region (beg end)
   "Transliterate Unicode chars between BEG and END to ASCII."
@@ -34,8 +44,26 @@
     (goto-char (point-min))
     (let (chr new)
       (while (setq chr (char-after))
-        (delete-char 1)
-        (insert (elt unidecode-chars chr))))))
+        (setq new (cond ((< chr #x80)    ; ASCII
+                         chr)
+                        ((> chr #xEFFFF) ; PUA and above
+                         nil)
+                        (t
+                         (let* ((section (lsh chr -8))
+                                (position (mod chr 256))
+                                (table (gethash section unidecode--cache)))
+                           (unless (vectorp table)
+                             (let ((file (unidecode--section-file section)))
+                               (when (file-readable-p file)
+                                 (setq table (unidecode--read-file file))
+                                 (puthash section table unidecode--cache))))
+                           (and (vectorp table)
+                                (< position (length table))
+                                (aref table position))))))
+        (if (eq chr new)
+            (forward-char 1)
+          (delete-char 1)
+          (when new (insert new)))))))
 
 (defun unidecode (string)
   "Transliterate Unicode chars in STRING and return the result."

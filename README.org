@@ -1,49 +1,40 @@
-* TODOs
+* unidecode.el
 
-- Optimize unidecode-chars.el, probably the same way, as in Python Unidecode
+Functions for transliterating Unicode text to ASCII:
+
+- =(unidecode STRING)=
+- =(unidecode-region BEG END)=
+- =(unidecode-sanitize STRING)=
+- =(unidecode-sanitize-region BEG END)=
+
+This package was derived from the [[https://pypi.python.org/pypi/Unidecode][Unidecode]] module for Python, which was in turn
+derived from the [[http://search.cpan.org/~sburke/Text-Unidecode-1.30/lib/Text/Unidecode.pm][Text::Unidecode]] package for Perl.
+
+** Example use
+
+#+BEGIN_SRC emacs-lisp
+(require 'unidecode)
+
+(unidecode "Déjà vu")
+;=> "Deja vu"
+(unidecode "北亰")
+;=> "Bei Jing "
+(unidecode-sanitize "Déjà vu, all over again")
+;=> "deja-vu-all-over-again"
+#+END_SRC
 
 * How this package was made
 
-The following is the explanation of the process of converting the
-Python package to Emacs Lisp.
+This package uses a number of data files (see the [[file:data/][data]] directory), which were
+converted from the corresponding files in the Python Unidecode module.
 
-The following Python script was run in Unidecode's source directory to
-load its data to =final_data= list.
+The scripts used to perform this conversion are [[file:tools/unidecode-convert.el][tools/unidecode-convert.el]] and
+[[file:tools/unidecode_convert.py][tools/unidecode_convert.py]].
 
-#+BEGIN_SRC python
-import os, sys
-
-xs = os.listdir('.')
-xs.remove('__init__.py')
-xs.sort()
-
-final_data = []
-for filename in xs:
-    module = __import__(filename[:-3])
-    module_data = list(module.data)
-
-    # some modules have data of 255 entries, fill them up to 256
-    if len(module_data) < 256:
-        module_data += [''] * (256 - len(module_data))
-
-    final_data.extend(module_data)
-#+END_SRC
-
-The following script was used to dump =final_data= to a JSON file.
-
-#+BEGIN_SRC python
-import json
-
-with open('unidecode.json', 'w') as filename:
-    json.dump(final_data, filename)
-#+END_SRC
-
-The following command was used to load JSON data as Emacs Lisp vector,
-after installing =json= package in Emacs:
-
-#+BEGIN_SRC emacs-lisp
-(json-read-file "unidecode.json")
-#+END_SRC
-
-After that the resulting vector was just stored verbatim in
-=unidecode-chars.el=.
+To perform the conversion yourself, load =unidecode-convert.el= and run the
+=unidecode-convert= command (e.g. =M-x unidecode-convert RET=). When prompted,
+enter the path to Unidecode's source directory as the first argument, and where
+you want the files to be saved as the second argument. It uses the Python script
+to convert the Unidecode files to JSON, then uses Emacs's =json= package to load
+them, and finally prints them as =read=-able Lisp data as stored in the =data=
+directory.
