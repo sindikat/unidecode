@@ -1,4 +1,4 @@
-;;; unidecode.el --- Convert Unicode text into safe ASCII strings
+;;; unidecode.el --- Transliterate Unicode to ASCII -*- lexical-binding: t -*-
 ;;
 ;; Copyright (C) 2013 sindikat
 ;;
