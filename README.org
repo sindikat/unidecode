@@ -1,7 +1,6 @@
 * TODOs
 
 - Optimize unidecode-chars.el, probably the same way, as in Python Unidecode
-- In unidecode-unidecode function i can also use (map 'string ...) instead of (apply #'concat (mapcar ...)), but i'm not sure how to require cl-extra.el
 
 * How this package was made
 

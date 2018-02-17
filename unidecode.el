@@ -4,7 +4,6 @@
 ;;
 ;; Author: sindikat <sindikat at mail36 dot net>
 ;; Version: 0.1
-;; Package-Requires: ((cl-lib "0.4"))
 ;;
 ;; This file is not part of GNU Emacs.
 ;;
@@ -21,7 +20,6 @@
 ;; More information in file README.org
 
 ;;; Code:
-(require 'cl-lib)
 
 (defconst unidecode-chars
   (with-temp-buffer
@@ -29,15 +27,46 @@
     (read (current-buffer)))
   "Vector mapping Unicode code points to unidecoded data.")
 
-(defun unidecode-unidecode (s)
-  (apply #'concat (mapcar (lambda (ch) (elt unidecode-chars ch)) s)))
+(defun unidecode-region (beg end)
+  "Transliterate Unicode chars between BEG and END to ASCII."
+  (save-restriction
+    (narrow-to-region beg end)
+    (goto-char (point-min))
+    (let (chr new)
+      (while (setq chr (char-after))
+        (delete-char 1)
+        (insert (elt unidecode-chars chr))))))
 
-(defun unidecode-sanitize (s)
-  "Strip all chars from string that are not alphanumeric or
-hyphen, convert space to hyphen"
-  (let ((s (replace-regexp-in-string " " "-" (unidecode-unidecode (downcase s))))
-        (valid "abcdefghijklmnopqrstuvwxyz1234567890-"))
-    (cl-remove-if-not (lambda (ch) (cl-find ch valid)) s)))
+(defun unidecode-unidecode (string)
+  "Transliterate Unicode chars in STRING and return the result."
+  (with-temp-buffer
+    (insert string)
+    (unidecode-region (point-min) (point-max))
+    (buffer-string)))
+
+(defun unidecode-sanitize-region (beg end)
+  "Sanitize region between BEG and END.
+Strip all characters that are not alphanumeric or hyphen, and
+convert space to hyphen."
+  (save-restriction
+    (narrow-to-region beg end)
+    (downcase-region (point-min) (point-max))
+    (unidecode-region (point-min) (point-max))
+    (goto-char (point-min))
+    (while (re-search-forward "[[:blank:]]" nil t)
+      (replace-match "-"))
+    (goto-char (point-min))
+    (while (re-search-forward "[^a-z0-9-]+" nil t)
+      (replace-match ""))))
+
+(defun unidecode-sanitize (string)
+  "Sanitize STRING and return the result.
+Strip all characters that are not alphanumeric or hyphen, and
+convert space to hyphen."
+  (with-temp-buffer
+    (insert string)
+    (unidecode-sanitize-region (point-min) (point-max))
+    (buffer-string)))
 
 (provide 'unidecode)
 ;;; unidecode.el ends here
