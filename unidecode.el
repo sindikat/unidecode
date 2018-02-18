@@ -3,14 +3,14 @@
 ;; Copyright (C) 2013 sindikat
 ;;
 ;; Author: sindikat <sindikat at mail36 dot net>
-;; Version: 0.1
+;; Version: 0.2
 ;;
 ;; This file is not part of GNU Emacs.
 ;;
 ;; This file is placed in the public domain to the extent possible by law.
-;;
-;;; Commentary:
 
+;;; Commentary:
+;;
 ;; Transliterate Unicode characters into one of 128 ASCII characters.
 ;; This package is an Emacs Lisp port of Python Unidecode package.
 ;;
