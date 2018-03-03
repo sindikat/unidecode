@@ -24,7 +24,7 @@
 \"Привет\" -> \"Privet\"."
   (let ((s-original "æб¦ ")
         (s-decoded "aeb| "))
-    (let ((result (unidecode-unidecode s-original)))
+    (let ((result (unidecode s-original)))
       (should (equal result s-decoded)))))
 
 (ert-deftest unidecode-test-sanitize ()
