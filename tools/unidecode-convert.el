@@ -2,8 +2,6 @@
 
 (require 'json)
 
-(eval-when-compile (require 'pcase))
-
 (defvar unidecode-convert-python-program "python"
   "The Python executable to use.")
 
