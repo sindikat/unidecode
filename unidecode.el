@@ -1,8 +1,10 @@
 ;;; unidecode.el --- Transliterate Unicode to ASCII -*- lexical-binding: t -*-
 ;;
 ;; Copyright (C) 2013 sindikat
+;; Copyright (C) 2018 sindikat, John Mastro
 ;;
 ;; Author: sindikat <sindikat at mail36 dot net>
+;; Maintainer: John Mastro <john.b.mastro@gmail.com>
 ;; Version: 0.2
 ;;
 ;; This file is not part of GNU Emacs.
