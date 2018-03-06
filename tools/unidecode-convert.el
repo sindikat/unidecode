@@ -1,8 +1,34 @@
-;; -*- lexical-binding: t -*-
+;;; unidecode-convert.el --- Convert character tables -*- lexical-binding: t -*-
+;;
+;; Copyright (C) 2018 John Mastro
+;;
+;; Author: John Mastro <john.b.mastro@gmail.com>
+;; Version: 0.2
+;;
+;; This file is not part of GNU Emacs.
+;;
+;; This program is free software: you can redistribute it and/or modify it under
+;; the terms of the GNU General Public License as published by the Free Software
+;; Foundation, version 2.
+;;
+;; This program is distributed in the hope that it will be useful, but WITHOUT
+;; ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+;; FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
+;; details.
+;;
+;; You should have received a copy of the GNU General Public License along with
+;; this program. If not, see <http://www.gnu.org/licenses/>.
+
+;;; Commentary:
+;;
+;; Convert the character tables in the Python Unidecode package to Emacs Lisp
+;; data.
+;;
+;; See README.org for additional information.
+
+;;; Code:
 
 (require 'json)
-
-(eval-when-compile (require 'pcase))
 
 (defvar unidecode-convert-python-program "python"
   "The Python executable to use.")
@@ -51,3 +77,6 @@ Save the Lisp data files in DESTINATION."
               (pop-to-buffer (current-buffer))
               (message "unidecode_convert.py error"))))
       (delete-directory tmp t))))
+
+(provide 'unidecode-convert)
+;;; unidecode-convert.el ends here

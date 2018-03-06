@@ -38,3 +38,8 @@ you want the files to be saved as the second argument. It uses the Python script
 to convert the Unidecode files to JSON, then uses Emacs's =json= package to load
 them, and finally prints them as =read=-able Lisp data as stored in the =data=
 directory.
+
+* License
+
+This project is free software, available under the terms of the GPLv2. See
+[[file:COPYING][COPYING]] for details.
