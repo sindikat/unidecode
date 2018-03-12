@@ -41,5 +41,5 @@ directory.
 
 * License
 
-This project is free software, available under the terms of the GPLv2. See
-[[file:COPYING][COPYING]] for details.
+This project is free software, available under the terms of the GPL, version 2
+or later. See [[file:COPYING][COPYING]] for details.
