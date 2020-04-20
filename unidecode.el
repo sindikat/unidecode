@@ -53,8 +53,10 @@
   (expand-file-name (format "unidecode-x%03x.eld" section)
                     unidecode--data-directory))
 
+;;;###autoload
 (defun unidecode-region (beg end)
   "Transliterate Unicode chars between BEG and END to ASCII."
+  (interactive "r")
   (save-restriction
     (narrow-to-region beg end)
     (goto-char (point-min))
